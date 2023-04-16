@@ -10,13 +10,13 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
-        "illuminate/database": "v9.*",
-        "illuminate/support": "^v9.*",
-        "illuminate/console": "^v9.*"
+        "illuminate/database": "v.9.25.5",
+        "illuminate/support": "v.9.25.5",
+        "illuminate/console": "v.9.25.5"
     },
     "require-dev": {
-        "orchestra/testbench": "^v7.*",
-        "phpunit/phpunit": "^10.*"
+        "orchestra/testbench": "v7.24.1",
+        "phpunit/phpunit": "10.1.0"
     },
 
     "autoload": {
