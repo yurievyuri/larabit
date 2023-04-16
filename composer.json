@@ -35,12 +35,5 @@
             "vendor/bin/phpunit"
         ]
     },
-    "minimum-stability": "dev",
-    "extra": {
-        "laravel": {
-            "providers": [
-                "Larabit\\Providers\\EloquentFilterServiceProvider"
-            ]
-        }
-    }
+    "minimum-stability": "dev"
 }
