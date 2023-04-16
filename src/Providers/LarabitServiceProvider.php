@@ -20,7 +20,7 @@ class LarabitServiceProvider extends ServiceProvider
                 LarabitCommand::class,
             ]);
 
-            exec('php ' . __DIR__ . '/../../artisan vendor:publish --provider="Larabit\Providers\LarabitServiceProvider\"');
+            //exec('php ' . __DIR__ . '/../../artisan vendor:publish --provider="Larabit\Providers\LarabitServiceProvider\"');
         }
 
         $this->loadRoutesFrom(__DIR__ . '/../../routes/api.php');
