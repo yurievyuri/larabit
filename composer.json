@@ -1,0 +1,45 @@
+{
+    "name": "yurievyuri/larabit",
+    "description": "Laravel Bitrix24 connector",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Yuri Yuriev"
+        }
+    ],
+    "license": "MIT",
+    "require": {
+        "php": "^8.2",
+        "illuminate/database": "^v9.52.5",
+        "illuminate/support": "^v9.52.5",
+        "illuminate/console": "^v9.52.5"
+    },
+    "require-dev": {
+        "orchestra/testbench": "^v7.24.1",
+        "phpunit/phpunit": "^10.0.19"
+    },
+
+    "autoload": {
+        "psr-4": {
+            "Larabit\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Larabit\\Test": "tests/"
+        }
+    },
+    "scripts": {
+        "test": [
+            "vendor/bin/phpunit"
+        ]
+    },
+    "minimum-stability": "dev",
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Larabit\\Providers\\EloquentFilterServiceProvider"
+            ]
+        }
+    }
+}
