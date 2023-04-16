@@ -10,14 +10,14 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
-        "laravel/framework": "^10.0"
+        "laravel/framework": "^10.0",
+        "orchestra/testbench": "*"
     },
     "require-dev": {
         "illuminate/database": "^v9.52.5",
         "illuminate/support": "^v9.52.5",
         "illuminate/console": "^v9.52.5",
-        "phpunit/phpunit": "^10.1.0",
-        "orchestra/testbench": "*"
+        "phpunit/phpunit": "^10.1.0"
     },
 
     "autoload": {
