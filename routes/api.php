@@ -1,6 +1,7 @@
 <?php
 
 use Dev\Larabit\Http\Controllers\AuthController;
+use Dev\Larabit\Http\Controllers\HandlerController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -27,10 +28,13 @@ Route::prefix(config('larabit.api_prefix'))->group(function() {
 
 
 Route::prefix(config('larabit.api_prefix'))->middleware('auth:sanctum')->group(function() {
-    Route::post('controller/{class}/{method}', function(Request $request, $class, $method) {
-        $class = '\\Dev\\Larabit\\Http\\Controllers\\' . ucfirst($class) . 'Controller';
+    Route::post('controller/connection/{method}', function(Request $request, $class, $method) {
+        $class = '\\Dev\\Larabit\\Http\\Controllers\\ConnectionController';
         if ( !class_exists($class) ) throw new \Exception("This request entity $class cannot be processed");
         if ( !method_exists($class, $method) ) throw new \Exception("This request method $method cannot be processed");
         return (new $class)->{$method}($request);
+    });
+    Route::post('controller/handler/{method}/', function(Request $request, $method) {
+        return (new HandlerController)->register($request, $method);
     });
 });
