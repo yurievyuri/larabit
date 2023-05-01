@@ -1,0 +1,56 @@
+{
+    "name": "dev/larabit",
+    "description": "Laravel Bitrix24 connector",
+    "type": "package",
+    "version": "0.0.0.1",
+    "homepage": "https://github.com/yurievyuri/larabit",
+    "keywords": ["laravel", "bitrix", "bitrix24", "hooks", "dev"],
+    "authors": [
+        {
+            "name": "Yuri Yuriev",
+            "email": "yurievyuri@live.com",
+            "homepage": "https://github.com/yurievyuri/",
+            "role": "Developer"
+        }
+    ],
+    "license": "MIT",
+    "require": {
+        "php": "^8.2",
+        "laravel/framework": "^10.0",
+        "laravel/sanctum": "^3.2"
+    },
+    "require-dev": {
+        "ext-xdebug": "*",
+        "illuminate/database": "^v9.52.6",
+        "illuminate/support": "^v9.52.6",
+        "illuminate/console": "^v9.52.6",
+        "phpunit/phpunit": "^10.1.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "Dev\\Larabit\\": "src/",
+            "Database\\Factories\\":  "database/factories/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Dev\\Larabit\\Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "test": [
+            "vendor/bin/phpunit"
+        ]
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Dev\\Larabit\\Providers\\LarabitServiceProvider"
+            ]
+        }
+    },
+    "minimum-stability": "dev"
+}
