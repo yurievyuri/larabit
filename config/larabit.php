@@ -9,7 +9,7 @@ return [
     |
     */
 
-    'registration_token' => env('LARABIT_REGISTRATION_TOKEN', '2u82405vn032430987v5-2347v5165n1g1'),
+    'registration_token' => env('LARABIT_REGISTRATION_TOKEN'),
     'token_key' => 'API_AUTH_TOKEN',
     'api_prefix' => env('LARABIT_API_PREFIX', 'larabit'),
 
