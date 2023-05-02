@@ -21,7 +21,6 @@ class AuthController extends Controller
      */
     public function register(Request $request): JsonResponse
     {
-        $this->validateRegistrationToken($request);
         $this->validateUser($request);
 
         $user = User::create([
@@ -35,7 +34,6 @@ class AuthController extends Controller
             $user->setRememberToken($token);
             $user->save();
         }
-
         return $this->sendResponse([
             'token' => $token,
             'user_id' => $user->id,
@@ -111,13 +109,4 @@ class AuthController extends Controller
         throw new Exception(__('larabit::auth_controller.validate.user.exception'));
     }
 
-    /**
-     * @throws Exception
-     */
-    private function validateRegistrationToken(Request $request): void
-    {
-        if ($request->get('registration_token') !== config('larabit.registration_token')) {
-            throw new Exception(__('larabit::auth_controller.validate.reg.exception'));
-        }
-    }
 }

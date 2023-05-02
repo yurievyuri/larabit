@@ -1,6 +1,6 @@
 <?php
 
-namespace Dev\Larabit\Helpers;
+namespace Dev\Larabit\Utilities;
 
 class Constants
 {

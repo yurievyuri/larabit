@@ -34,7 +34,6 @@ class AuthControllerTest extends TestCase
             'registration_token' => config('larabit.registration_token')
         ];
 
-
         $this->post('/api/' . config('larabit.api.prefix') . config('larabit.routes.auth.register'), $payload)
             ->assertStatus(ResponseAlias::HTTP_OK);
 
@@ -43,6 +42,22 @@ class AuthControllerTest extends TestCase
 
         $this->assertDatabaseHas('users', $payload);
     }
+
+    /**
+     * @test
+     */
+    public function user_create_without_token(): void
+    {
+        $payload = [
+            'name' => $this->faker()->firstName,
+            'email'      => $this->faker()->email,
+            'password'   => $this->faker()->password(10)
+        ];
+
+        $this->post('/api/' . config('larabit.api.prefix') . config('larabit.routes.auth.register'), $payload)
+            ->assertStatus(ResponseAlias::HTTP_INTERNAL_SERVER_ERROR);
+    }
+
 
     /**
      * @test

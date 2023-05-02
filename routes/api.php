@@ -3,12 +3,13 @@
 use Dev\Larabit\Http\Controllers\AuthController;
 use Dev\Larabit\Http\Controllers\ConnectionController;
 use Dev\Larabit\Http\Controllers\HandlerController;
+use Dev\Larabit\Http\Middleware\RegistrationTokenValidate;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
-| API Routes
+| LARABIT API Routes
 |--------------------------------------------------------------------------
 |
 | Here is where you can register API routes for your application. These
@@ -17,13 +18,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-
 // Auth routes
 Route::prefix(config('larabit.api.prefix'))->group(function() {
-
     Route::post(config('larabit.routes.auth.register'), function(Request $request) {
         return (new AuthController)->register($request);
-    });
+    })->middleware(RegistrationTokenValidate::class);
 
     Route::post(config('larabit.routes.auth.unregister'), function(Request $request) {
         return (new AuthController)->unregister($request);
