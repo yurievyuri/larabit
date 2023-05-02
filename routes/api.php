@@ -16,25 +16,22 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+
 // Auth routes
-Route::prefix(config('larabit.api_prefix'))->group(function() {
-    Route::post('auth/register', function(Request $request) {
+Route::prefix(config('larabit.api.prefix'))->group(function() {
+    Route::post(config('larabit.routes.auth.register'), function(Request $request) {
         return (new AuthController)->register($request);
     });
-    Route::post('/auth/unregister', function(Request $request) {
+    Route::post(config('larabit.routes.auth.unregister'), function(Request $request) {
         return (new AuthController)->unregister($request);
     })->middleware('auth:sanctum');
 });
 
-
-Route::prefix(config('larabit.api_prefix'))->middleware('auth:sanctum')->group(function() {
-    Route::post('controller/connection/{method}', function(Request $request, $class, $method) {
-        $class = '\\Dev\\Larabit\\Http\\Controllers\\ConnectionController';
-        if ( !class_exists($class) ) throw new \Exception("This request entity $class cannot be processed");
-        if ( !method_exists($class, $method) ) throw new \Exception("This request method $method cannot be processed");
-        return (new $class)->{$method}($request);
+Route::prefix(config('larabit.api.prefix'))->middleware('auth:sanctum')->group(function() {
+    Route::post(config('larabit.routes.controller.connection') . '/{method}', function(Request $request, $method) {
+        return (new \Dev\Larabit\Http\Controllers\ConnectionController)->{$method}($request);
     });
-    Route::post('controller/handler/{method}/', function(Request $request, $method) {
+    Route::post(config('larabit.routes.controller.handler') . '/{method}', function(Request $request, $method) {
         return (new HandlerController)->register($request, $method);
     });
 });

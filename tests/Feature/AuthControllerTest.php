@@ -34,7 +34,8 @@ class AuthControllerTest extends TestCase
             'registration_token' => config('larabit.registration_token')
         ];
 
-        $this->post('/api/auth/register', $payload)
+
+        $this->post('/api/' . config('larabit.api.prefix') . config('larabit.routes.auth.register'), $payload)
             ->assertStatus(ResponseAlias::HTTP_OK);
 
         unset($payload['password']);
@@ -42,29 +43,6 @@ class AuthControllerTest extends TestCase
 
         $this->assertDatabaseHas('users', $payload);
     }
-
-    /**
-     * @test
-     * @method register()
-     * @method unregister()
-     * @return void
-     */
-    /*public function user_register_and_unregister(): void
-    {
-        $payload = [
-            'name' => $this->faker()->firstName,
-            'email'      => $this->faker()->email,
-            'password'   => $this->faker()->password,
-            'domain' => $this->faker()->domainName,
-            'registration_token' => config('larabit.registration_token')
-        ];
-
-        $this->post('/api/auth/register', $payload)
-            ->assertStatus(ResponseAlias::HTTP_CREATED);
-
-        $this->post('/api/auth/unregister', $payload)
-            ->assertStatus(ResponseAlias::HTTP_ACCEPTED);
-    }*/
 
     /**
      * @test
@@ -80,7 +58,7 @@ class AuthControllerTest extends TestCase
             'registration_token' => config('larabit.registration_token')
         ];
 
-        $content = $this->post('/api/auth/register', $payload)
+        $content = $this->post('/api/' . config('larabit.api.prefix') . config('larabit.routes.auth.register'), $payload)
             ->assertStatus(ResponseAlias::HTTP_OK)
             ->getContent();
 
@@ -88,7 +66,7 @@ class AuthControllerTest extends TestCase
         $this->assertNotEmpty($content['data']['token']);
         $this->assertIsInt($content['data']['user_id']);
 
-        $code = $this->post('/api/auth/unregister', $payload, [
+        $code = $this->post('/api/' . config('larabit.api.prefix') . config('larabit.routes.auth.unregister'), $payload, [
             'AUTHORIZATION' => 'Bearer ' . $content['data']['token']
         ])
             //->assertStatus(ResponseAlias::HTTP_OK)

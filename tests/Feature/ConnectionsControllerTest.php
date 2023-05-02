@@ -28,7 +28,7 @@ class ConnectionsControllerTest extends TestCase
             'registration_token' => config('larabit.registration_token')
         ];
 
-        $content = $this->post('/api/auth/register', $payload)
+        $content = $this->post('/api/' . config('larabit.api.prefix') . config('larabit.routes.auth.register'), $payload)
             ->assertStatus(ResponseAlias::HTTP_OK)
             ->getContent();
 
@@ -43,11 +43,11 @@ class ConnectionsControllerTest extends TestCase
         $auth =  ['AUTHORIZATION' => 'Bearer ' . $content['data']['token']];
 
         $this
-            ->post('/api/controller/connection/register', $connPayload, $auth)
+            ->post('/api/'. config('larabit.api.prefix') . config('larabit.routes.controller.connection') . '/register', $connPayload, $auth)
             ->assertStatus(ResponseAlias::HTTP_OK);
 
-        $res = $this->post('/api/auth/unregister', $payload,$auth)->getContent();
-            //->assertStatus(ResponseAlias::HTTP_OK);
+        $this->post('/api/' . config('larabit.api.prefix') . config('larabit.routes.auth.unregister'), $payload,$auth)
+            ->assertStatus(ResponseAlias::HTTP_OK);
 
     }
 }
