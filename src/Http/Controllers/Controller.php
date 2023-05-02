@@ -7,7 +7,6 @@ use Dev\Larabit\Http\Resources\ControllerResource;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 
 class Controller extends \App\Http\Controllers\Controller
 {
@@ -127,10 +126,10 @@ class Controller extends \App\Http\Controllers\Controller
      * return error response.
      *
      * @param $message
-     * @param int $code
+     * @param int|null $code
      * @return JsonResponse
      */
-    public function sendError($message, int $code = null ): JsonResponse
+    public function sendError($message, int $code = null): JsonResponse
     {
         if ( !$code ) {
             $code = config('larabit.http.code.error');

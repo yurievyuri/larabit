@@ -21,7 +21,7 @@ return [
     'http' => [
         'code' => [
             'ok' => ResponseAlias::HTTP_OK,
-            'error' => ResponseAlias::HTTP_CONFLICT
+            'error' => ResponseAlias::HTTP_BAD_REQUEST
         ]
     ],
 
