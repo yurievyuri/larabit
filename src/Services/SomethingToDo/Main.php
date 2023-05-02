@@ -10,7 +10,10 @@ use Illuminate\Support\ServiceProvider;
  */
 class Main
 {
-    public function getMain(): string
+    /**
+     * @return string
+     */
+    public function get(): string
     {
         return 'main';
     }

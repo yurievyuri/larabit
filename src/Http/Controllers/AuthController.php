@@ -31,7 +31,7 @@ class AuthController extends Controller
         ]);
 
         $token = $user->createToken(config('larabit.token_key'))->plainTextToken;
-        if ( $token ) {
+        if ($token) {
             $user->setRememberToken($token);
             $user->save();
         }
@@ -39,7 +39,7 @@ class AuthController extends Controller
         return $this->sendResponse([
             'token' => $token,
             'user_id' => $user->id,
-        ],__('larabit::auth_controller.register.success') );
+        ], __('larabit::auth_controller.register.success'));
     }
 
     /**
@@ -49,7 +49,7 @@ class AuthController extends Controller
     {
         $user = User::where('email', $request->get('email'));
         $arUsers[] = $user->first()->toArray();
-        if ( !$user->delete() ) {
+        if (!$user->delete()) {
             return $this->sendError(__('larabit::auth_controller.unregister.fail'));
         }
         Connection::where('user_id', $arUsers)->delete();
@@ -66,7 +66,7 @@ class AuthController extends Controller
     {
         $this->validateUser($request, true);
         $user = User::where('email', $request->get('email'))->first();
-        if ( !$user ){
+        if (!$user) {
             return $this->sendError(__('larabit::auth_controller.login.fail'));
         }
         return $this->sendResponse(['token' => $user->getRememberToken()],
@@ -82,7 +82,7 @@ class AuthController extends Controller
     {
         $this->validateUser($request, true);
         $user = User::where('email', $request->get('email'))->first();
-        if ( !$user ){
+        if (!$user) {
             return $this->sendError(__('larabit::auth_controller.login.fail'));
         }
         return $this->sendResponse(['token' => $user->getRememberToken()],

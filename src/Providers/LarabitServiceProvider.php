@@ -2,10 +2,7 @@
 
 namespace Dev\Larabit\Providers;
 
-use Dev\Larabit\Services\SomethingToDo\AbstractClass;
-use Dev\Larabit\Services\SomethingToDo\InterfaceClass;
 use Dev\Larabit\Services\SomethingToDo\Main;
-use Dev\Larabit\Services\SomethingToDo\TraitClass;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Http\Request;
@@ -36,17 +33,13 @@ class LarabitServiceProvider extends ServiceProvider
             // $this->commands([LarabitCommand::class]);
         }
 
-        //  laravel connect config file in service provider without copying to config folder
         $this->mergeConfigFrom(__DIR__ . '/../../config/larabit.php', 'larabit');
 
-
-        // laravel connect language files in service provider without copying to lang folder
         $this->loadTranslationsFrom(__DIR__ . '/../../resources/lang/', 'larabit');
 
-        // laravel connect views files in service provider without copying to views folder
         $this->loadViewsFrom(__DIR__ . '/../../resources/views/', 'larabit');
 
-        // !!! It is important to connect after receiving all the settings
+
         Route::middleware('api')
             ->prefix('api')
             ->namespace('Dev\Larabit\Http\Controllers\Api')
@@ -54,6 +47,7 @@ class LarabitServiceProvider extends ServiceProvider
 
         Route::middleware('web')
             ->group(__DIR__ . '/../../routes/web.php');
+
     }
 
 
@@ -63,23 +57,13 @@ class LarabitServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->bind(Main::class, function ($app) {
-            return new Main($app);
-        });
+        if ($this->app->isLocal()) {
+            $this->app->register(\Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class);
+        }
 
-        $this->app->bind(
-            AbstractClass::class,
-            Main::class
-        );
+        //$this->app->register(ActionServiceProvider::class);
+        $this->app->registerDeferredProvider(ActionServiceProvider::class);
 
-        $this->app->bind(
-          TraitClass::class,
-          Main::class
-        );
-
-        $this->app->bind(
-            InterfaceClass::class,
-            Main::class
-        );
+        $this->app->bind('something', Main::class);
     }
 }

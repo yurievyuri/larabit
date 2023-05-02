@@ -1,9 +1,6 @@
 <?php
 
-use Illuminate\Http\Request;
+use Dev\Larabit\Http\Controllers\ControllerClass;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/test/', function(Request $request){
-
-
-});
+Route::get('/test/', ControllerClass::class);
