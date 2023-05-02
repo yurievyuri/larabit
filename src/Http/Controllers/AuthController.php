@@ -9,7 +9,6 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
 {
@@ -21,8 +20,6 @@ class AuthController extends Controller
      */
     public function register(Request $request): JsonResponse
     {
-        $this->validateUser($request);
-
         $user = User::create([
             'name' => $request->get('name'),
             'email' => $request->get('email'),
@@ -34,6 +31,7 @@ class AuthController extends Controller
             $user->setRememberToken($token);
             $user->save();
         }
+
         return $this->sendResponse([
             'token' => $token,
             'user_id' => $user->id,
@@ -62,51 +60,8 @@ class AuthController extends Controller
      */
     public function login(Request $request): JsonResponse
     {
-        $this->validateUser($request, true);
-        $user = User::where('email', $request->get('email'))->first();
-        if (!$user) {
-            return $this->sendError(__('larabit::auth_controller.login.fail'));
-        }
-        return $this->sendResponse(['token' => $user->getRememberToken()],
+        return $this->sendResponse(['token' => Auth::user()->getRememberToken()],
             __('larabit::auth_controller.login.success'));
-    }
-
-    /**
-     * @param Request $request
-     * @return JsonResponse
-     * @throws Exception
-     */
-    public function user(Request $request): JsonResponse
-    {
-        $this->validateUser($request, true);
-        $user = User::where('email', $request->get('email'))->first();
-        if (!$user) {
-            return $this->sendError(__('larabit::auth_controller.login.fail'));
-        }
-        return $this->sendResponse(['token' => $user->getRememberToken()],
-            __('larabit::auth_controller.login.success'));
-    }
-
-    /**
-     * @throws Exception
-     */
-    private function validateUser(Request $request, bool $attempt = false): void
-    {
-        $validateUser = Validator::make($request->all(),
-            [
-                'name' => 'required|string|min:3|max:255',
-                'email' => 'required|email|unique:users,email',
-                'password' => 'required|string|min:8|max:255'
-            ]);
-
-        if ($validateUser->fails()) {
-            throw new Exception(implode(',', $validateUser->errors()->all()));
-        }
-
-        if (!$attempt) return;
-        if (Auth::attempt($request->only(['email', 'password']))) return;
-
-        throw new Exception(__('larabit::auth_controller.validate.user.exception'));
     }
 
 }

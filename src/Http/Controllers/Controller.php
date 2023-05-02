@@ -31,7 +31,7 @@ class Controller extends \App\Http\Controllers\Controller
             'message' => static::class . '::' . __FUNCTION__
         ];
 
-        return response()->json($response, 200);
+        return response()->json($response, config('larabit.http.code.ok'));
     }
 
     /**
@@ -45,7 +45,7 @@ class Controller extends \App\Http\Controllers\Controller
             'message' => static::class . '::' . __FUNCTION__
         ];
 
-        return response()->json($response, 200);
+        return response()->json($response, config('larabit.http.code.ok'));
     }
 
     /**
@@ -59,7 +59,7 @@ class Controller extends \App\Http\Controllers\Controller
             'message' => static::class . '::' . __FUNCTION__
         ];
 
-        return response()->json($response, 200);
+        return response()->json($response, config('larabit.http.code.ok'));
     }
 
     /**
@@ -73,7 +73,7 @@ class Controller extends \App\Http\Controllers\Controller
             'message' => static::class . '::' . __FUNCTION__
         ];
 
-        return response()->json($response, 200);
+        return response()->json($response, config('larabit.http.code.ok'));
     }
 
     /**
@@ -93,7 +93,7 @@ class Controller extends \App\Http\Controllers\Controller
             'message' => static::class . '::' . __FUNCTION__
         ];
 
-        return response()->json($response, 200);
+        return response()->json($response, config('larabit.http.code.ok'));
     }
 
     /**
@@ -107,12 +107,15 @@ class Controller extends \App\Http\Controllers\Controller
             'message' => static::class . '::' . __FUNCTION__
         ];
 
-        return response()->json($response, 200);
+        return response()->json($response, config('larabit.http.code.ok'));
     }
 
 
-    public function sendResponse($result, $message, int $code = ResponseAlias::HTTP_OK): JsonResponse
+    public function sendResponse($result, $message, int $code = null): JsonResponse
     {
+        if ( !$code ) {
+            $code = config('larabit.http.code.ok');
+        }
         return response()->json([
             'success' => !empty($result),
             'data' => $result,
@@ -127,8 +130,11 @@ class Controller extends \App\Http\Controllers\Controller
      * @param int $code
      * @return JsonResponse
      */
-    public function sendError($message, int $code = ResponseAlias::HTTP_BAD_REQUEST): JsonResponse
+    public function sendError($message, int $code = null ): JsonResponse
     {
+        if ( !$code ) {
+            $code = config('larabit.http.code.error');
+        }
         return response()->json([
             'success' => false,
             'message' => is_countable($message) && is_array($message) ? implode(',', $message) : $message,

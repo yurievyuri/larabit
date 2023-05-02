@@ -4,9 +4,10 @@ namespace Dev\Larabit\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
-class RegistrationTokenValidate
+class DuplicateUserValidate
 {
     /**
      * Handle an incoming request.
@@ -18,8 +19,8 @@ class RegistrationTokenValidate
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if ($request->get('registration_token') !== config('larabit.registration_token')) {
-            abort(config('larabit.http.code.error'), __('larabit::auth_controller.validate.reg.exception'));
+        if (Auth::attempt($request->only(['name', 'email', 'password']))) {
+            abort(config('larabit.http.code.error'), __('larabit::auth_controller.validate.user.exception'));
         }
 
         return $next($request);

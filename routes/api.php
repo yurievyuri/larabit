@@ -4,6 +4,8 @@ use Dev\Larabit\Http\Controllers\AuthController;
 use Dev\Larabit\Http\Controllers\ConnectionController;
 use Dev\Larabit\Http\Controllers\HandlerController;
 use Dev\Larabit\Http\Middleware\RegistrationTokenValidate;
+use Dev\Larabit\Http\Middleware\DuplicateUserValidate;
+use Dev\Larabit\Http\Middleware\UserFieldsValidate;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -20,14 +22,21 @@ use Illuminate\Support\Facades\Route;
 
 // Auth routes
 Route::prefix(config('larabit.api.prefix'))->group(function() {
+
     Route::post(config('larabit.routes.auth.register'), function(Request $request) {
         return (new AuthController)->register($request);
-    })->middleware(RegistrationTokenValidate::class);
+    })
+        ->middleware(UserFieldsValidate::class)
+        ->middleware(RegistrationTokenValidate::class)
+        ->middleware(DuplicateUserValidate::class)
+    ;
 
     Route::post(config('larabit.routes.auth.unregister'), function(Request $request) {
         return (new AuthController)->unregister($request);
     })->middleware('auth:sanctum');
 
+    Route::post(config('larabit.routes.auth.login'), [AuthController::class, 'login'])
+        ->middleware('auth:sanctum');
 });
 
 Route::prefix(config('larabit.api.prefix'))->middleware('auth:sanctum')->group(function() {

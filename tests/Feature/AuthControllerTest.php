@@ -35,7 +35,7 @@ class AuthControllerTest extends TestCase
         ];
 
         $this->post('/api/' . config('larabit.api.prefix') . config('larabit.routes.auth.register'), $payload)
-            ->assertStatus(ResponseAlias::HTTP_OK);
+            ->assertStatus(config('larabit.http.code.ok'));
 
         unset($payload['password']);
         unset($payload['registration_token']);
@@ -46,7 +46,7 @@ class AuthControllerTest extends TestCase
     /**
      * @test
      */
-    public function user_create_without_token(): void
+    public function user_create_without_registration_token_has_error(): void
     {
         $payload = [
             'name' => $this->faker()->firstName,
@@ -55,7 +55,22 @@ class AuthControllerTest extends TestCase
         ];
 
         $this->post('/api/' . config('larabit.api.prefix') . config('larabit.routes.auth.register'), $payload)
-            ->assertStatus(ResponseAlias::HTTP_INTERNAL_SERVER_ERROR);
+            ->assertStatus(config('larabit.http.code.error'));
+    }
+
+    /**
+     * @test
+     */
+    public function user_create_without_password_token_has_error(): void
+    {
+        $payload = [
+            'name' => $this->faker()->firstName,
+            'email'      => $this->faker()->email,
+            'registration_token' => config('larabit.registration_token')
+        ];
+
+        $this->post('/api/' . config('larabit.api.prefix') . config('larabit.routes.auth.register'), $payload)
+            ->assertStatus(config('larabit.http.code.error'));
     }
 
 
@@ -74,17 +89,15 @@ class AuthControllerTest extends TestCase
         ];
 
         $content = $this->post('/api/' . config('larabit.api.prefix') . config('larabit.routes.auth.register'), $payload)
-            ->assertStatus(ResponseAlias::HTTP_OK)
+            ->assertStatus(config('larabit.http.code.ok'))
             ->getContent();
 
         $content = json_decode($content, true);
         $this->assertNotEmpty($content['data']['token']);
         $this->assertIsInt($content['data']['user_id']);
 
-        $code = $this->post('/api/' . config('larabit.api.prefix') . config('larabit.routes.auth.unregister'), $payload, [
+        $this->post('/api/' . config('larabit.api.prefix') . config('larabit.routes.auth.unregister'), $payload, [
             'AUTHORIZATION' => 'Bearer ' . $content['data']['token']
-        ])
-            //->assertStatus(ResponseAlias::HTTP_OK)
-            ->getContent();
+        ])->assertStatus(config('larabit.http.code.ok'));
     }
 }

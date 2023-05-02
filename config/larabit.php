@@ -1,5 +1,7 @@
 <?php
 
+use Symfony\Component\HttpFoundation\Response as ResponseAlias;
+
 return [
 
     /*
@@ -16,6 +18,13 @@ return [
         'prefix' => env('LARABIT_API_PREFIX', 'larabit')
     ],
 
+    'http' => [
+        'code' => [
+            'ok' => ResponseAlias::HTTP_OK,
+            'error' => ResponseAlias::HTTP_CONFLICT
+        ]
+    ],
+
     /*
     |--------------------------------------------------------------------------
     | ROUTES
@@ -26,7 +35,8 @@ return [
     'routes' => [
         'auth' => [
             'register' => '/auth/register',
-            'unregister' => '/auth/unregister'
+            'unregister' => '/auth/unregister',
+            'login' => '/auth/login',
         ],
         'controller' => [
             'connection' => '/controller/connection',

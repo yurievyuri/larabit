@@ -29,7 +29,7 @@ class ConnectionsControllerTest extends TestCase
         ];
 
         $content = $this->post('/api/' . config('larabit.api.prefix') . config('larabit.routes.auth.register'), $payload)
-            ->assertStatus(ResponseAlias::HTTP_OK)
+            ->assertStatus(config('larabit.http.code.ok'))
             ->getContent();
 
 
@@ -44,10 +44,10 @@ class ConnectionsControllerTest extends TestCase
 
         $this
             ->post('/api/'. config('larabit.api.prefix') . config('larabit.routes.controller.connection') . '/register', $connPayload, $auth)
-            ->assertStatus(ResponseAlias::HTTP_OK);
+            ->assertStatus(config('larabit.http.code.ok'));
 
         $this->post('/api/' . config('larabit.api.prefix') . config('larabit.routes.auth.unregister'), $payload,$auth)
-            ->assertStatus(ResponseAlias::HTTP_OK);
+            ->assertStatus(config('larabit.http.code.ok'));
 
     }
 }
