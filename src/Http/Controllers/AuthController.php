@@ -20,7 +20,7 @@ class AuthController extends Controller
      */
     public function register(Request $request): JsonResponse
     {
-        $user = User::create([
+        $user = (new User)->create([
             'name' => $request->get('name'),
             'email' => $request->get('email'),
             'password' => Hash::make($request->get('password'))
@@ -31,6 +31,8 @@ class AuthController extends Controller
             $user->setRememberToken($token);
             $user->save();
         }
+
+        //Auth::login($user);
 
         return $this->sendResponse([
             'token' => $token,
@@ -43,7 +45,7 @@ class AuthController extends Controller
      */
     public function unregister(Request $request): JsonResponse
     {
-        $user = User::where('email', $request->get('email'));
+        $user = (new User)->where('email', $request->get('email'));
         $arUsers[] = $user->first()->toArray();
         if (!$user->delete()) {
             return $this->sendError(__('larabit::auth_controller.unregister.fail'));
