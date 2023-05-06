@@ -12,6 +12,7 @@ return [
     */
 
     'registration_token' => env('LARABIT_REGISTRATION_TOKEN'),
+
     'token_key' => 'API_AUTH_TOKEN',
     'api_prefix' => env('LARABIT_API_PREFIX', 'larabit'),
     'api' => [
@@ -21,6 +22,7 @@ return [
     'http' => [
         'code' => [
             'ok' => ResponseAlias::HTTP_OK,
+            'created' => ResponseAlias::HTTP_CREATED,
             'error' => ResponseAlias::HTTP_BAD_REQUEST
         ]
     ],
